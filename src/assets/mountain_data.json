@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "name": "チトカニウシ山",
+    "kana": "ちとかにうしやま",
+    "position": { "lat": 43.906666666666666, "lng": 143.04861111111111 },
+    "elevation": 1446,
+    "prefectures": "北海道",
+    "location": "北見山地"
+  },
+  {
+    "id": 2,
+    "name": "岩木山",
+    "kana": "いわきさん",
+    "position": { "lat": 40.655833333333334, "lng": 140.30305555555557 },
+    "elevation": 1625,
+    "prefectures": "青森県",
+    "location": "白神山地"
+  },
+  {
+    "id": 3,
+    "name": "伊豆ヶ岳",
+    "kana": "いずがたけ",
+    "position": { "lat": 35.926944444444445, "lng": 139.16055555555556 },
+    "elevation": 851,
+    "prefectures": "埼玉県",
+    "location": "関東山地"
+  },
+  {
+    "id": 4,
+    "name": "百里ヶ岳",
+    "kana": "ひゃくりがだけ",
+    "position": { "lat": 35.391666666666666, "lng": 135.81 },
+    "elevation": 931,
+    "prefectures": "福井県",
+    "location": "丹波高地"
+  },
+  {
+    "id": 5,
+    "name": "開聞岳",
+    "kana": "かいもんだけ",
+    "position": { "lat": 31.18, "lng": 130.52833333333334 },
+    "elevation": 924,
+    "prefectures": "鹿児島県",
+    "location": "九州南部"
+  }
+]
