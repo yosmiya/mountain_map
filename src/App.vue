@@ -15,6 +15,7 @@ export default defineComponent({
       google: null,
       map: null,
       mountain_id: 0,
+      prefectures: '',
       infoWindow: null,
       contentString: '',
       mountainData: [],
@@ -62,31 +63,45 @@ export default defineComponent({
      */
     const addMarker = () => {
       // 検索条件に応じたマーカーの絞り込み
-      const mountainList = mountain_data.filter(data => {
-        switch(state.mountain_id) {
-          case "1":
-            return data.elevation >= 500 && data.elevation <= 1000;
-          case "2":
-            return data.elevation >= 1000 && data.elevation <= 1500;
-          case "3":
-            return data.elevation >= 1500 && data.elevation <= 2000;
-          case "4":
-            return data.elevation >= 2000 && data.elevation <= 2500;
-          case "5":
-            return data.elevation >= 2500 && data.elevation <= 3000;
-          case "6":
-            return data.elevation >= 3000 && data.elevation <= 3500;
-          case "7":
-            return data.elevation >= 3500 && data.elevation <= 4000;
-          default:
-            return data.elevation >= 0 && data.elevation <= 500;
-        }
-      });
+      let mountainList = [];
+
+      if ( state.mountain_id != 0 )
+      {
+        mountainList = mountain_data.filter(data => {
+          switch(state.mountain_id) {
+            case "1":
+              return data.elevation >= 0 && data.elevation <= 500;
+            case "2":
+              return data.elevation >= 500 && data.elevation <= 1000;
+            case "3":
+              return data.elevation >= 1000 && data.elevation <= 1500;
+            case "4":
+              return data.elevation >= 1500 && data.elevation <= 2000;
+            case "5":
+              return data.elevation >= 2000 && data.elevation <= 2500;
+            case "6":
+              return data.elevation >= 2500 && data.elevation <= 3000;
+            case "7":
+              return data.elevation >= 3000 && data.elevation <= 3500;
+            case "8":
+              return data.elevation >= 3500 && data.elevation <= 4000;
+            default:
+              return true;
+          }
+        });
+      }
+
+      if ( state.prefectures != 0 )
+      {
+        mountainList = mountainList.filter(data => {
+          return data.prefectures === state.prefectures;
+        });
+      }
 
       // マーカーの情報を設定する
       mountainList.forEach(data => {
         const marker = new state.google.maps.Marker({
-          position: { lat: data.position.lat, lng: data.position.lng },
+          position: { lat: parseFloat(data.lat), lng: parseFloat(data.lng) },
           map: state.map
         });
 
@@ -184,20 +199,22 @@ export default defineComponent({
         <br>
         <input type="radio" id="three" value="3" v-model="state.mountain_id" v-on:change="hideMarkers(); addMarker()" /><label for="three">1500 - 2000</label> -->
         <select v-model="state.mountain_id">
-          <option value="1">500 - 1000</option>
-          <option value="2">1000 - 1500</option>
-          <option value="3">1500 - 2000</option>
-          <option value="4">2000 - 2500</option>
-          <option value="5">2500 - 3000</option>
-          <option value="6">3000 - 3500</option>
-          <option value="7">3500 - 4000</option>
+          <option value="0">-</option>
+          <option value="1">0 - 500</option>
+          <option value="2">500 - 1000</option>
+          <option value="3">1000 - 1500</option>
+          <option value="4">1500 - 2000</option>
+          <option value="5">2000 - 2500</option>
+          <option value="6">2500 - 3000</option>
+          <option value="7">3000 - 3500</option>
+          <option value="8">3500 - 4000</option>
         </select>
       </div>
       <div class="searchBlock">
         <span class="searchBlock_title">都道府県</span>
         <br>
-        <select name="ken">
-          <option value="選択してください">-</option>
+        <select name="ken" v-model="state.prefectures">
+          <option value="0">-</option>
           <option value="北海道">北海道</option>
           <option value="青森県">青森県</option>
           <option value="岩手県">岩手県</option>
@@ -258,9 +275,9 @@ export default defineComponent({
 
     <div class="mountainList">
       <div class="mountainList_data" v-for="data in state.mountainData" :key="data.id" v-on:click="clickMountainList(data)">
-        <span class="mountainList_data_name"><b>{{ data.name }}</b>（{{ data.kana }}）</span>
+        <span class="mountainList_data_name"><b>{{ data.name }} {{ data.elevation }}m</b></span>
         <br>
-        <span>標高：{{ data.elevation }}m 場所：{{ data.prefectures }} {{ data.location }}</span>
+        <span>{{ data.prefectures }} {{ data.location }}</span>
       </div>
     </div>
 
@@ -282,7 +299,7 @@ export default defineComponent({
 
 .searchContent {
   font-size: 0.8rem;
-  width: 16vw;
+  width: 12vw;
   margin-right: 15px;
 }
 
@@ -295,8 +312,10 @@ export default defineComponent({
 }
 
 .mountainList {
-  width: 24vw;
+  width: 40vw;
   margin-right: 15px;
+  overflow: scroll;
+  height: 550px;
 }
 
 .mountainList_data {
